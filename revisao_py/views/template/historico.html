@@ -1,0 +1,41 @@
+{% extends 
+
+{% block title %}Histórico — RaspaVoo{%  %}
+
+{% block content %}
+<section class="topo-pagina">
+    <h1>Histórico de coletas</h1>
+    <p class="subtitulo">Cada sincronização vira uma foto no SQLite — igual à Aula 17, só que de voo.</p>
+</section>
+
+<section class="painel">
+    {% if coletas %}
+    <div class="tabela-wrap">
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Aeroporto</th>
+                    <th>Tipo</th>
+                    <th>Total</th>
+                    <th>Quando</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in coletas %}
+                <tr>
+                    <td><a href="{{ url_for('site.detalhe_coleta', coleta_id=c.id) }}">#{{ c.id }}</a></td>
+                    <td>{{ c.aeroporto }}</td>
+                    <td>{{ c.tipo_busca }}</td>
+                    <td>{{ c.total }}</td>
+                    <td>{{ c.data_criacao }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="vazio">Ainda sem coletas. Vá na home e marque “Gravar no histórico”.</p>
+    {% endif %}
+</section>
+{% endblock %}

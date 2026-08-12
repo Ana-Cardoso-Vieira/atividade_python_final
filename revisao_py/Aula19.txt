@@ -1,0 +1,20 @@
+================================================================================
+AULA 19 — RASPAVOO: WEBSCRAPING DE VOOS + FRONT (baseada na Aula 17)
+================================================================================
+
+  Aula 17  →  GE Globo + ColetaGe / MencaoGe
+  Aula 19  →  FlightAware + ColetaVoo / VooInfo + site RaspaVoo
+
+  Front (render_template):
+    GET  /              → home com formulário e avião
+    POST /buscar        → raspagem + tabela de voos
+    GET  /historico     → coletas no SQLite
+
+  API:
+    GET  /api/voos
+    POST /api/voos/sincronizar
+    GET  /api/historico/coletas
+
+  Query: ?aeroporto=SBGR  (ICAO)  &tipo=chegadas|partidas|todos
+
+================================================================================

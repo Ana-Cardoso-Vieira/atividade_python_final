@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}Coleta #{{ coleta.id }} — RaspaVoo{% endblock %}
+
+{% block content %}
+<section class="topo-pagina">
+    <h1>
+        <svg class="titulo-aviao" viewBox="0 0 48 20" aria-hidden="true">
+            <path d="M2 12 L22 9 L46 7 L40 11 L46 14 L22 13 L10 18 L7 16 L14 12 Z" fill="currentColor"/>
+        </svg>
+        Coleta #{{ coleta.id }}
+    </h1>
+    <p class="subtitulo">
+        {{ coleta.aeroporto }} · {{ coleta.tipo_busca }} · {{ coleta.total }} voos · {{ coleta.data_criacao }}
+    </p>
+    <div class="hero-actions">
+        <a class="btn" href="{{ url_for('site.historico') }}">Voltar ao histórico</a>
+        <a class="btn" href="/api/historico/coletas/{{ coleta.id }}" target="_blank">JSON desta coleta</a>
+    </div>
+</section>
+
+<section class="painel" style="margin-top: 1.25rem;">
+    {% if coleta.voos %}
+    <div class="tabela-wrap">
+        <table class="tabela">
+            <thead>
+                <tr>
+                    <th>Voo</th>
+                    <th>Categoria</th>
+                    <th>Aeronave</th>
+                    <th>Origem / Destino</th>
+                    <th>Partida</th>
+                    <th>Chegada</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in coleta.voos %}
+                <tr>
+                    <td><strong>{{ v.identificacao }}</strong></td>
+                    <td><span class="tag">{{ v.categoria }}</span></td>
+                    <td>{{ v.tipo_aeronave or "—" }}</td>
+                    <td>{{ v.local or "—" }}</td>
+                    <td>{{ v.partida or "—" }}</td>
+                    <td>{{ v.chegada or "—" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="vazio">Esta coleta não tem voos.</p>
+    {% endif %}
+    <p class="fonte">Fonte: {{ coleta.fonte }}</p>
+</section>
+{% endblock %}

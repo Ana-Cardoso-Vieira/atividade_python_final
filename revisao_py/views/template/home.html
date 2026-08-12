@@ -1,0 +1,85 @@
+{% extends  %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-texto">
+        <p class="hero-selo">
+            <svg class="selo-aviao" viewBox="0 0 48 20" aria-hidden="true">
+                <path d="M2 12 L22 9 L46 7 L40 11 L46 14 L22 13 L10 18 L7 16 L14 12 Z" fill="currentColor"/>
+            </svg>
+            webscraping com estilo
+        </p>
+        <h1 class="hero-brand">Raspa<em>Voo</em></h1>
+        <p class="hero-lead">
+            O radar mais brincalhão da sala: a gente raspa o painel do aeroporto
+            e te mostra quem está decolando, pousando ou ainda no ar.
+        </p>
+    </div>
+
+    <div class="hero-aviao-grande" aria-hidden="true">
+        <svg viewBox="0 0 280 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="rastro" d="M10 70 Q 90 55 160 62" stroke="currentColor" stroke-width="2" stroke-dasharray="6 10" opacity="0.35"/>
+            <g class="aviao-svg">
+                <path d="M40 72 L140 58 L250 48 L220 68 L250 78 L140 72 L70 98 L55 88 L95 72 Z"
+                      fill="currentColor"/>
+                <path d="M140 58 L175 22 L190 28 L160 66" fill="currentColor" opacity="0.8"/>
+                <circle cx="58" cy="72" r="5" fill="#f7c948"/>
+                <circle cx="78" cy="70" r="3.5" fill="#ffe08a" opacity="0.7"/>
+            </g>
+        </svg>
+    </div>
+</section>
+
+<section class="painel busca-painel">
+    <h2 class="secao-titulo">Para onde miramos o radar?</h2>
+    <form method="post" action="{{ url_for('site.buscar') }}" class="form-busca">
+        <div class="campo">
+            <label for="aeroporto">Aeroporto (ICAO)</label>
+            <select id="aeroporto" name="aeroporto" required>
+                {% for codigo, nome in aeroportos %}
+                <option value="{{ codigo }}" {% if codigo == 'SBGR' %}selected{% endif %}>
+                    {{ codigo }} — {{ nome }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="campo">
+            <label for="tipo">Tipo</label>
+            <select id="tipo" name="tipo">
+                <option value="todos">Todos</option>
+                <option value="chegadas">Só chegadas</option>
+                <option value="partidas">Só partidas</option>
+            </select>
+        </div>
+        <div class="campo campo-check">
+            <label class="check-label">
+                <input type="checkbox" name="salvar" value="1" checked>
+                Gravar no histórico SQLite
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primario">Decolar o scraping</button>
+    </form>
+</section>
+
+<section class="painel" style="margin-top: 1.25rem;">
+    <h2 class="secao-titulo">Últimas coletas</h2>
+    {% if coletas %}
+        <ul class="lista">
+            {% for c in coletas %}
+            <li>
+                <div>
+                    <a href="{{ url_for('site.detalhe_coleta', coleta_id=c.id) }}">
+                        #{{ c.id }} · {{ c.aeroporto }} · {{ c.tipo_busca }}
+                    </a>
+                    <div class="meta">{{ c.data_criacao }}</div>
+                </div>
+                <span class="badge">{{ c.total }} voos</span>
+            </li>
+            {% endfor %}
+        </ul>
+        <p class="link-mais"><a href="{{ url_for('site.historico') }}">Ver histórico completo →</a></p>
+    {% else %}
+        <p class="vazio">Nenhuma coleta ainda. Decole o scraping e salve a primeira foto do céu.</p>
+    {% endif %}
+</section>
+{% endblock %}
