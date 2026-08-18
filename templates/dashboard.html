@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block titulo %}Dashboard{% endblock %}
+{% block conteudo %}
+
+<div class="alert alert-info d-flex align-items-center" role="alert">
+  <i class="bi bi-lightbulb me-2 fs-4"></i>
+  <div><em id="fraseMotivacional">"{{ frase }}"</em></div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-3 gap-2">
+  <h4 class="mb-0"><i class="bi bi-list-task"></i> Minhas Tarefas</h4>
+
+  <div class="d-flex align-items-center gap-2">
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="filtroStatus" data-bs-toggle="dropdown">
+        <i class="bi bi-funnel"></i> Filtrar por status
+      </button>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item filtro-item" href="#" data-status="todas">Todas</a></li>
+        <li><a class="dropdown-item filtro-item" href="#" data-status="pendente">Pendente</a></li>
+        <li><a class="dropdown-item filtro-item" href="#" data-status="em_andamento">Em andamento</a></li>
+        <li><a class="dropdown-item filtro-item" href="#" data-status="concluida">Concluída</a></li>
+      </ul>
+    </div>
+    <a href="{{ url_for('nova_tarefa') }}" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Nova Tarefa</a>
+  </div>
+</div>
+
+<div class="row g-3" id="listaTarefas">
+  {% include "_lista_tarefas.html" %}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function corPorStatus(status) {
+  if (status === "pendente") return "card-pendente";
+  if (status === "em_andamento") return "card-andamento";
+  if (status === "concluida") return "card-concluida";
+  return "";
+}
+
+function labelStatus(status) {
+  if (status === "pendente") return "Pendente";
+  if (status === "em_andamento") return "Em andamento";
+  if (status === "concluida") return "Concluída";
+  return status;
+}
+
+document.querySelectorAll(".filtro-item").forEach(function (item) {
+  item.addEventListener("click", function (e) {
+    e.preventDefault();
+    const status = this.dataset.status;
+    fetch(`/tarefas/status/${status}`)
+      .then((res) => res.json())
+      .then((tarefas) => {
+        const container = document.getElementById("listaTarefas");
+        if (tarefas.length === 0) {
+          container.innerHTML = `<div class="col-12"><div class="alert alert-secondary">Nenhuma tarefa encontrada.</div></div>`;
+          return;
+        }
+        container.innerHTML = tarefas
+          .map(
+            (t) => `
+          <div class="col-md-4">
+            <div class="card task-card ${corPorStatus(t.status)} h-100 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">${t.titulo}</h5>
+                <p class="card-text">${t.descricao ? t.descricao : "<span class='text-muted'>Sem descrição</span>"}</p>
+                <span class="badge bg-dark">${labelStatus(t.status)}</span>
+              </div>
+              <div class="card-footer bg-transparent d-flex justify-content-end gap-2">
+                <a href="/editar/${t.id}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                <form method="POST" action="/excluir/${t.id}" onsubmit="return confirm('Excluir esta tarefa?');">
+                  <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                </form>
+              </div>
+            </div>
+          </div>`
+          )
+          .join("");
+      });
+  });
+});
+</script>
+{% endblock %}

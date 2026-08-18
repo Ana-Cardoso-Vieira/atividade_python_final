@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block titulo %}Progresso{% endblock %}
+{% block conteudo %}
+<h4 class="mb-4"><i class="bi bi-bar-chart"></i> Dashboard de Progresso</h4>
+
+<div class="row">
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="text-center">Tarefas por status (barras)</h6>
+        <canvas id="graficoBarras"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 mb-4">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h6 class="text-center">Tarefas por status (pizza)</h6>
+        <canvas id="graficoPizza"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script>
+fetch("/api/progresso")
+  .then((res) => res.json())
+  .then((dados) => {
+    const labels = ["Pendente", "Em andamento", "Concluída"];
+    const valores = [dados.pendente, dados.em_andamento, dados.concluida];
+    const cores = ["#ffc107", "#0d6efd", "#198754"];
+
+    new Chart(document.getElementById("graficoBarras"), {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{ label: "Tarefas", data: valores, backgroundColor: cores }],
+      },
+      options: { scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } },
+    });
+
+    new Chart(document.getElementById("graficoPizza"), {
+      type: "pie",
+      data: {
+        labels: labels,
+        datasets: [{ data: valores, backgroundColor: cores }],
+      },
+    });
+  });
+</script>
+{% endblock %}

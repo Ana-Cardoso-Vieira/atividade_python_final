@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block titulo %}{{ "Editar Tarefa" if tarefa else "Nova Tarefa" }}{% endblock %}
+{% block conteudo %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h4 class="mb-4">
+          <i class="bi bi-{{ 'pencil-square' if tarefa else 'plus-circle' }}"></i>
+          {{ "Editar Tarefa" if tarefa else "Nova Tarefa" }}
+        </h4>
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label">Título</label>
+            <input type="text" class="form-control" name="titulo" required
+                   value="{{ tarefa['titulo'] if tarefa else '' }}" autofocus>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Descrição</label>
+            <textarea class="form-control" name="descricao" rows="4">{{ tarefa['descricao'] if tarefa else '' }}</textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Status</label>
+            <select class="form-select" name="status">
+              <option value="pendente" {% if tarefa and tarefa['status']=='pendente' %}selected{% endif %}>Pendente</option>
+              <option value="em_andamento" {% if tarefa and tarefa['status']=='em_andamento' %}selected{% endif %}>Em andamento</option>
+              <option value="concluida" {% if tarefa and tarefa['status']=='concluida' %}selected{% endif %}>Concluída</option>
+            </select>
+          </div>
+          <div class="d-flex justify-content-between">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Cancelar</a>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-check2"></i> Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,61 @@
+body {
+    background-color: #f4f6f9;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.task-card {
+    border-left: 6px solid #ccc;
+    transition: transform 0.15s ease;
+}
+
+.task-card:hover {
+    transform: translateY(-3px);
+}
+
+.card-pendente {
+    border-left-color: #ffc107;
+    background-color: #fff9e6;
+}
+
+.card-andamento {
+    border-left-color: #0d6efd;
+    background-color: #e8f1ff;
+}
+
+.card-concluida {
+    border-left-color: #198754;
+    background-color: #e9f7ef;
+}
+
+body.modo-escuro {
+    background-color: #121212;
+    color: #f1f1f1;
+}
+
+body.modo-escuro .navbar {
+    background-color: #1a1a1a !important;
+}
+
+body.modo-escuro .card {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+}
+
+body.modo-escuro .card-pendente {
+    background-color: #3a3320;
+}
+
+body.modo-escuro .card-andamento {
+    background-color: #1e2b3a;
+}
+
+body.modo-escuro .card-concluida {
+    background-color: #1c3327;
+}
+
+body.modo-escuro .form-control,
+body.modo-escuro .form-select {
+    background-color: #2a2a2a;
+    color: #f1f1f1;
+    border-color: #444;
+}
