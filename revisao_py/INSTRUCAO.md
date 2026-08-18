@@ -1,6 +1,0 @@
-Projeto anexo
-Contexto da Task: Subindo o RaspaVoo para Produção
-Você acabou de entrar na equipe como Desenvolvedor(a) Junior e sua primeira grande missão é colocar a plataforma RaspaVoo no ar. No entanto, o sistema foi entregue com vários problemas críticos e precisa de depuração urgente antes do deploy.
-Durante a sua análise do código, você identificou os seguintes bugs:Modelo Base: Não está fornecendo os atributos necessários para as demais classes/componentes.Blueprint de Histórico: A rota/módulo da API de histórico não está respondendo corretamente.API de Voos: Os métodos encarregados de manipular as requisições de voo estão quebrados.Templates e Layouts: O front-end parou de funcionar porque os arquivos de layout deixaram de herdar o template base corretamente.
-Seu Desafio:
-Analise a estrutura do projeto, identifique as falhas apontadas no diagnóstico e aplique as correções necessárias para restaurar a integração entre o backend e o frontend, garantindo que a aplicação volte a rodar perfeitamente.
